@@ -1,9 +1,25 @@
 import random
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-def pass_generator()
-    letters = [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]
-    numbers = [0,1,2,3,4,5,6,7,8,9,]
-    signs = [~,!,@,'#',$,%,^,&,*,(,),-,+ ]
+def pass_generator():
+    password = ""
+    capital_letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    numbers = ["0","1","2","3","4","5","6","7","8","9",]
+    signs = ["~","!","@",'#',"$","%","^","&","*","(",")","-","+" ]
+    pass_entry.delete(0,END)
+
+    for i in range(0,3):
+        letters_value = random.choice(letters)
+        capital_letters_value = random.choice(capital_letters)
+        numbers_value = random.choice(numbers)
+        signs_value = random.choice(signs)
+
+        password = str(password + letters_value + capital_letters_value + numbers_value + signs_value)
+        
+    pass_entry.insert(0, password)
+    
+
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -31,13 +47,13 @@ email_entry.grid(row=2, column=1, columnspan=2)
 pass_label = Label(text="password")
 pass_label.grid(row=3, column=0)
 
-pass_entry = Entry(width= 43)
+pass_entry = Entry(window, width= 43)
 pass_entry.grid(row=3, column=1)
 
-pass_button = Button(text="generate",width=16)
+pass_button = Button(text="generate",width=16, command=pass_generator)
 pass_button.grid(row=3, column=2)
 
-add_to_file = Button(text="add details", width=60)
+add_to_file = Button(text="save password to file", width=59)
 add_to_file.grid(row=4, column=1, columnspan=3)
 
 window.mainloop()
