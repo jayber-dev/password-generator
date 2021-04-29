@@ -1,9 +1,6 @@
 import random
-
-# ---------------------------- FILE CREATION ----------------------------#
-details_file = open("datafile.txt", "w")
-details_file.write("website, user/email, password \n")
-details_file.close()
+from tkinter import *
+from tkinter import messagebox
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -33,14 +30,27 @@ def save_to_file():
     email = email_entry.get()
     password_data = pass_entry.get()
 
+  
+    user_input = messagebox.askokcancel(title="check", message="are you sure ?")
+    if user_input == True:
+        details_file = open("datafile.txt", "a")
+        details_file.write(f"{website}, {email}, {password_data}  \n")
+        details_file.close()
 
-    details_file = open("datafile.txt", "a")
-    details_file.write(f"{website}, {email}, {password_data}  \n")
-    details_file.close()
+        pass_entry.delete(0,END)
+        pass_entry.insert(0,"insert or generate a password")
+        email_entry.delete(0,END)
+        web_entry.delete(0,END)
+    
+    else:
+        pass_entry.delete(0,END)
+        pass_entry.insert(0,"insert or generate a password")
+        email_entry.delete(0,END)
+        web_entry.delete(0,END)
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
-from tkinter import *
 
 window = Tk()
 window.config(padx=10,pady=10)
@@ -73,5 +83,8 @@ pass_button.grid(row=3, column=2)
 
 add_to_file = Button(text="save password to file", width=59, command=save_to_file)
 add_to_file.grid(row=4, column=1, columnspan=3)
+# ----------------------------- messege box --------------------------------------#
+
+
 
 window.mainloop()
