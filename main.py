@@ -1,6 +1,24 @@
 import random
 from tkinter import *
 from tkinter import messagebox
+import json
+
+
+# ---------------------------- SEARCH MECHANISM --------------------------------#
+
+
+def search():
+    with open("data.json", "r") as data_file:
+        file = json.load(data_file)
+        web_entry_to_search = web_entry.get()
+        if web_entry_to_search in file:
+            website_found = file
+            email_address = file[web_entry_to_search]['email']
+            password_found = file[web_entry_to_search]['password']
+            messagebox.showinfo(web_entry_to_search, f"username: {email_address} \n"
+                                               f"password: {password_found}")
+        else:
+            messagebox.showinfo("ooops", "no such website")
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -31,44 +49,51 @@ def save_to_file():
     website = web_entry.get()
     email = email_entry.get()
     password_data = pass_entry.get()
-
+    new_data = {
+        website: {
+            "email": email,
+            "password": password_data}
+    }
 
     if website == "" or email == "" or password_data == "":
         messagebox.showwarning("warning", "there is an empty field")
     else:
-        user_input = messagebox.askokcancel(title="check", message="are you sure ?")
-        if user_input:
+        try:
+            with open("data.json", "r") as data_file:
+                data = json.load(data_file)
+                data.update(new_data)
 
-            details_file = open("datafile.txt", "a")
-            details_file.write(f"{website}, {email}, {password_data}  \n")
-            details_file.close()
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
 
-            pass_entry.delete(0, END)
-            pass_entry.insert(0, "insert or generate a password")
-            email_entry.delete(0, END)
-            web_entry.delete(0, END)
-
-        else:
-            pass_entry.delete(0, END)
-            pass_entry.insert(0, "insert or generate a password")
-            email_entry.delete(0, END)
-            web_entry.delete(0, END)
+        pass_entry.delete(0, END)
+        pass_entry.insert(0, "insert or generate a password")
+        email_entry.delete(0, END)
+        web_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
-window.config(padx=10, pady=10)
+window.config(padx=5, pady=5)
 logo = PhotoImage(file="logo.png")
 canvas = Canvas(width=250, height=189)
 canvas.create_image(150, 99, image=logo)
 canvas.grid(row=0, column=1)
-# ---------------------------------------- Label ----------------------------------------- #
+# ---------------------------------------- WEBSITE Label ----------------------------------------- #
 web_label = Label(text="website", width=5)
 web_label.grid(row=1, column=0)
 
-web_entry = Entry(width=70)
-web_entry.grid(row=1, column=1, columnspan=2)
+web_entry = Entry(width=50)
+web_entry.grid(row=1, column=1)
+
+# --------------------------------- SEARCH BUTTON -----------------------------------#
+
+search_button = Button(text="search", width=16, command=search)
+search_button.grid(row=1, column=2)
 # ----------------------------------------- email/username LABEL ---------------------- #
 email_label = Label(text="e-mail/username")
 email_label.grid(row=2, column=0)
