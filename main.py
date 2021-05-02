@@ -18,7 +18,7 @@ def search():
             messagebox.showinfo(web_entry_to_search, f"username: {email_address} \n"
                                                f"password: {password_found}")
         else:
-            messagebox.showinfo("ooops", F"there is no "{web_entry_to_search}" in the database")
+            messagebox.showinfo("ooops", F'there is no "{web_entry_to_search}" in the database')
             web_entry.delete(0, END)
 
 
